@@ -57,7 +57,7 @@ end
 function scene:enterFrame(event)
   -- called every frame
 
-  if scene.view.isVisible then return end
+  if not scene.view.isVisible then return end
   -- if scene is hidden don't do these things
 
   if scene.paused then return end
