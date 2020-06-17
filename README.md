@@ -1,31 +1,33 @@
-# scenes for Solar2D
+# Scenes for Solar2D
 
-This is a simpler, instanced scene manager for Solar2D (formerly CoronaSDK) and is designed to allow for multiple concurrent scenes. For example a HUD scene that lives above a game scene that’s persistent and multiple modal dialogs that stack and close in the order they are created
+This is a simpler, instanced scene manager for Solar2D (formerly CoronaSDK) and is designed to allow for multiple concurrent scenes. For example a HUD scene that lives above a game scene that’s persistent and multiple modal dialogs that stack and close in the order they are created.
 
 Also, there’s a simple fade in/out transition that uses a screen overlay and can be expanded to support any style of layered screen transition.
 
-#### Examples
+It's not as full featured as *composer* or *storyBoard* but it's extendable as needed.
 
-Create a new scene:
+### Examples
+
+#### Create a new scene:
 ```
 local scenes = require "scenes"
 local template = scenes.new("scenes.template")
 scenes.show("template", {transition = "fade", time = 250 })
 ```
 
-Show a new modal:
+#### Show a new modal:
 ```
 scenes.new("scenes.modal", { name = "modal", modal = true, dim = 0.5 })
 scenes.show("modal")
 ```
 
-Hide and remove:
+#### Hide and remove:
 ```
 scenes.hide("template", {transition = "fade", time = 250 })
 scenes.remove("template", {collectgarbage = true})
 ```
 
-Base scene template:
+#### Base scene template:
 ```
 -- Scenes: scene template
 
