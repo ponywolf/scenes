@@ -73,7 +73,7 @@ local function fadeIn(onComplete, time, delay)
 end
 
 function M.list()
-  for k,v in pairs(list) do
+  for k,_ in pairs(list) do
     print ("Scene:",k)
   end
 end
