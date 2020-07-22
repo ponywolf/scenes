@@ -152,6 +152,7 @@ end
 function M.show(name, options)
   local scene = list[name]
   options = options or {}
+  local onComplete = options.onComplete
 
   -- does the scene exist?
   if not scene then
@@ -163,26 +164,28 @@ function M.show(name, options)
     scene:resize()
   end
 
-  if scene.show then
-    if options.transition == "fade" then
-      scene:show({phase = "began", options = options})
-      scene.view.isVisible = true
-      local function ended()
-        scene:show({phase = "ended", options = options})
-      end
-      M.overlay:insert(fadeIn(ended, options.time, options.delay))
-      M.overlay:toFront()
-    else
-      scene:show({phase = "began", options = options})
-      scene.view.isVisible = true
-      scene:show({phase = "ended", options = options})
+  if options.transition == "fade" then
+    if scene.show then scene:show({phase = "began", options = options}) end
+    scene.view.isVisible = true
+    local function ended()
+      if scene.show then scene:show({phase = "ended", options = options}) end
+      if onComplete then onComplete() end
     end
+    M.overlay:insert(fadeIn(ended, options.time, options.delay))
+    M.overlay:toFront()
+  else -- no transition
+    if scene.show then scene:show({phase = "began", options = options}) end
+    scene.view.isVisible = true
+    if scene.show then scene:show({phase = "ended", options = options}) end
+    if onComplete then onComplete() end
   end
+
 end
 
 function M.hide(name, options)
   local scene = list[name]
   options = options or {}
+  local onComplete = options.onComplete
 
   -- does the scene exist?
   if not scene then
@@ -190,20 +193,20 @@ function M.hide(name, options)
     return false
   end
 
-  if scene.hide then
-    if options.transition == "fade" then
-      scene:hide({phase = "began", options = options})
-      local function ended()
-        scene.view.isVisible = false
-        scene:hide({phase = "ended", options = options})
-      end
-      M.overlay:insert(fadeOut(ended, options.time, options.delay))
-      M.overlay:toFront()
-    else
-      scene:hide({phase = "began", options = options})
+  if options.transition == "fade" then
+    if scene.hide then scene:hide({phase = "began", options = options}) end
+    local function ended()
       scene.view.isVisible = false
-      scene:hide({phase = "ended", options = options})
+      if scene.hide then scene:hide({phase = "ended", options = options}) end
+      if onComplete then onComplete() end
     end
+    M.overlay:insert(fadeOut(ended, options.time, options.delay))
+    M.overlay:toFront()
+  else -- no transition
+    if scene.hide then scene:hide({phase = "began", options = options}) end
+    scene.view.isVisible = false
+    if scene.hide then scene:hide({phase = "ended", options = options}) end
+    if onComplete then onComplete() end
   end
 
 end
