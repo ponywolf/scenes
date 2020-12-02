@@ -46,12 +46,12 @@ end
 
 function scene:pause()
   -- add things here that might need to pause, must be called manually
-  scene.paused = true
+  self.isPaused = true
 end
 
 function scene:resume()
   -- restart things here that might needed to pause, must be called manually
-  scene.paused = false
+  self.isPaused = false
 end
 
 function scene:enterFrame(event)
@@ -60,7 +60,7 @@ function scene:enterFrame(event)
   if not scene.view.isVisible then return end
   -- if scene is hidden don't do these things
 
-  if scene.paused then return end
+  if self.isPaused then return end
   -- if scene paused don't do these things
 end
 
